@@ -7,7 +7,7 @@ load_dotenv()
 
 
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
-MODEL_NAME = "deepseek/deepseek-r1:free"  # Replace with the model name you wish to use
+MODEL_NAME = "google/gemini-2.0-flash-thinking-exp:free"  # Replace with the model name you wish to use
 
 # Function to interact with the API
 def ask_question(question: str):
@@ -49,8 +49,10 @@ def ask_question(question: str):
                         data_obj = json.loads(data)
                         content = data_obj["choices"][0]["delta"].get("content", "")
                         if content:
-                            print(content, end="", flush=True)  # Print incrementally without newlines
-                            full_response += content
+                            # Clean up any problematic characters or emojis
+                            cleaned_content = ''.join(char for char in content if ord(char) < 128)
+                            print(cleaned_content, end="", flush=True)  # Print incrementally without newlines
+                            full_response += cleaned_content
                     except json.JSONDecodeError:
                         pass
                         
