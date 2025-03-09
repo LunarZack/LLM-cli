@@ -1,6 +1,6 @@
 # LLM CLI
 
-A very simple command-line interface for interacting with AI models via OpenRouter's API.
+A very minimal interface for interacting with AI models via OpenRouter's API.
 
 ## Overview
 
