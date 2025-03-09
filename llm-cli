@@ -3,13 +3,12 @@ import requests
 import json
 import os
 
+
 load_dotenv()
-
-
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
-MODEL_NAME = "google/gemini-2.0-flash-thinking-exp:free"  # Replace with the model name you wish to use
+MODEL_NAME = "deepseek/deepseek-chat:free" 
 
-# Function to interact with the API
+
 def ask_question(question: str):
     # Append user input to conversation history
     conversation_history.append({"role": "user", "content": question})
@@ -25,7 +24,6 @@ def ask_question(question: str):
         "stream": True
     }
     
-    # Clean, simple output format
     print(f"\n{MODEL_NAME}:")
     
     # This will store the complete assistant response
@@ -49,35 +47,31 @@ def ask_question(question: str):
                         data_obj = json.loads(data)
                         content = data_obj["choices"][0]["delta"].get("content", "")
                         if content:
-                            # Clean up any problematic characters or emojis
+                            # Cleans up any problematic characters or emojis
                             cleaned_content = ''.join(char for char in content if ord(char) < 128)
-                            print(cleaned_content, end="", flush=True)  # Print incrementally without newlines
+                            print(cleaned_content, end="", flush=True)
                             full_response += cleaned_content
                     except json.JSONDecodeError:
                         pass
                         
-        print("\n")  # Add a newline after the full response
+        print("\n")
         
-        # Only add to conversation history after receiving the complete response
         if full_response:
             conversation_history.append({"role": "assistant", "content": full_response})
             
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
 
-# Main loop for continuous interaction
 def start_conversation():
     print(f"Starting conversation with {MODEL_NAME}. Type 'exit' to end.")
     print("-----------------------------------------------------------")
     while True:
-        # Clean, simple prompt with no redundant output
         user_input = input("\nYou: ")
         if user_input.lower() == "exit":
             print("Conversation ended.")
             break
         ask_question(user_input)
 
-# Start the conversation
 if __name__ == "__main__":
     conversation_history = []
     start_conversation()
