@@ -38,6 +38,10 @@ pip install requests python-dotenv
 ## Usage
 Run the script from your terminal:
 ```bash
+./start.sh
+```
+OR
+```bash
 python llm-cli.py
 ```
 
