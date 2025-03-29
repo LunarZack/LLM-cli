@@ -5,3 +5,5 @@ __pycache__
 *.pyc
 #saved conversation directory
 /convo_hist/
+#testing
+/testing_directory/
